@@ -1,9 +1,21 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import {
+    MapContainer,
+    TileLayer,
+    Marker,
+    Popup,
+    useMap
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Button, Box, Stack, useMediaQuery } from '@mui/material';
+import {
+    Button,
+    Box,
+    Stack,
+    useMediaQuery
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import L, { Icon } from 'leaflet';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import './Map.scss';
 
 const defaultIcon = new Icon({
@@ -21,13 +33,26 @@ const activeIcon = new Icon({
 });
 
 const monuments = [
-    { name: 'Қожа Ахмет Ясауи кесенесі', position: [43.2970, 68.2690] },
-    { name: 'Рабиға Сұлтан Бегім кесенесі', position: [43.2972, 68.2719] },
-    { name: 'Сауран қалашығы', position: [43.5042, 67.7650] },
-    { name: 'Жұма мешіті', position: [43.2958, 68.2706] },
-    { name: 'Шілдехана (Қылует жер асты мешіті)', position: [43.2965, 68.2678] },
-    { name: 'Әзірет Сұлтан қорық-мұражайы', position: [43.2963, 68.2690] },
-    { name: 'Ескі Түркістан қалашығы', position: [43.2928, 68.2986] },
+  { name: 'Бекет ата жерасты мешіті және Ескі Бейнеу қорымы', position: [45.184440, 55.108610] }, //
+  { name: 'Бекет ата жерасты мешіті (Оғланды)', position: [43.597220, 54.070000] }, //:contentReference[oaicite:1]{index=1}
+  { name: 'Масат ата жерасты мешіті және қорымы', position: [43.693056, 52.881944] }, //
+  { name: 'Қапаш мешіті', position: [44.253333, 52.343333] }, //:contentReference[oaicite:3]{index=3}
+  { name: 'Ақүйік қорымы', position: [44.027131, 52.318722] }, //:contentReference[oaicite:4]{index=4}
+  { name: 'Бекі қорымы', position: [43.886944, 52.062500] }, //:contentReference[oaicite:5]{index=5}
+  { name: 'Қараман ата жерасты мешіті', position: [43.899722, 51.871944] }, //:contentReference[oaicite:6]{index=6}
+  { name: 'Қараман ата қорымы', position: [43.899722, 51.871944] }, //:contentReference[oaicite:7]{index=7}
+  { name: 'Сисем ата қорымы', position: [44.620933, 53.580583] }, //:contentReference[oaicite:8]{index=8}
+  { name: 'Шопан ата жерасты мешіті', position: [43.547189, 53.393464] }, //:contentReference[oaicite:9]{index=9}
+  { name: 'Шақпақ ата жерасты мешіті', position: [44.433969, 51.136133] }, //:contentReference[oaicite:10]{index=10}
+  { name: 'Омар мен Тұр күмбезі', position: [45.272778, 55.437500] }, //:contentReference[oaicite:11]{index=11}
+  { name: 'Сенек қорымы', position: [43.355933, 53.402253] }, //:contentReference[oaicite:12]{index=12}
+  { name: 'Қызылсу қорымы', position: [43.566840, 53.457422] }, // (approximate, see:contentReference[oaicite:13]{index=13})
+  { name: 'Қаратөбе қорымы', position: [44.763889, 52.268611] }, //:contentReference[oaicite:14]{index=14}
+  { name: 'Бесінбай қорымы', position: [0.000000, 0.000000] }, // coordinates not found
+  { name: 'Қамысбай қорымы', position: [44.092119, 52.120919] }, //:contentReference[oaicite:15]{index=15}
+  { name: 'Уәли қорымы', position: [0.000000, 0.000000] }, // coordinates not found
+  { name: 'Тарас Шевченко мұражайы мен мемориалдық кешені', position: [44.502925, 50.264725] }, //:contentReference[oaicite:16]{index=16}
+  { name: 'Асалы күмбезтамы', position: [0.000000, 0.000000] } // coordinates not found
 ];
 
 function MapController({ position }: { position: [number, number] }) {
@@ -40,25 +65,43 @@ function Map() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     const handleClick = (index: number) => {
         setActiveIndex(prev => (prev === index ? null : index));
     };
 
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollRef.current) {
+            const { scrollLeft, clientWidth } = scrollRef.current;
+            const scrollAmount = clientWidth * 0.7;
+            scrollRef.current.scrollTo({
+                left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
+                behavior: 'smooth',
+            });
+        }
+    };
+
     return (
         <Box width="100%" height="100%">
-            {/* Кнопки сверху */}
-            <Box p={2} display="flex" justifyContent="center">
-                <Stack
-                    spacing={2}
-                    direction={isSmallScreen ? 'column' : 'row'}
-                    alignItems="center"
-                    justifyContent="center"
-                    flexWrap="wrap"
-                    width="100%"
-                    textAlign="center"
-                    gap="20px"
-                    sx={{marginBottom: "20px"}}
+            {/* Кнопки-карусель */}
+            <Box px={2} display="flex" alignItems="center" justifyContent="center">
+                {!isSmallScreen && (
+                    <Button onClick={() => scroll('left')}>
+                        <ChevronLeft />
+                    </Button>
+                )}
+                <Box
+                    ref={scrollRef}
+                    sx={{
+                        display: 'flex',
+                        overflowX: isSmallScreen ? 'auto' : 'hidden',
+                        scrollBehavior: 'smooth',
+                        flexWrap: 'nowrap',
+                        gap: 2,
+                        py: 2,
+                        width: '100%',
+                    }}
                 >
                     {monuments.map((monument, index) => {
                         const isActive = activeIndex === index;
@@ -69,10 +112,15 @@ function Map() {
                                 color={isActive ? 'primary' : 'inherit'}
                                 onClick={() => handleClick(index)}
                                 sx={{
-                                    color: isActive ? undefined : '#1976d2', // Синий цвет текста
-                                    borderColor: isActive ? undefined : '#1976d2', // Синий бордер
+                                    whiteSpace: 'normal',        // ✅ разрешаем перенос строк
+                                    maxWidth: 200,               // ✅ ограничиваем ширину
+                                    minWidth: 150,               // ✅ задаем минимальную ширину
+                                    height: '200px',
+                                    textAlign: 'center',         // ✅ выравниваем текст по центру
+                                    color: isActive ? undefined : '#1976d2',
+                                    borderColor: isActive ? undefined : '#1976d2',
                                     '&:hover': {
-                                        borderColor: '#1565c0', // Цвет при ховере
+                                        borderColor: '#1565c0',
                                         backgroundColor: isActive ? undefined : 'rgba(21, 101, 192, 0.04)',
                                     },
                                 }}
@@ -81,14 +129,19 @@ function Map() {
                             </Button>
                         );
                     })}
-                </Stack>
+                </Box>
+                {!isSmallScreen && (
+                    <Button onClick={() => scroll('right')}>
+                        <ChevronRight />
+                    </Button>
+                )}
             </Box>
 
             {/* Карта */}
             <Box width="100%" height="600px">
                 <MapContainer
-                    center={[43.2970, 68.2690]}
-                    zoom={14}
+                    center={[43.635588, 51.168245]}
+                    zoom={8}
                     scrollWheelZoom={false}
                     style={{ height: '100%', width: '100%' }}
                 >

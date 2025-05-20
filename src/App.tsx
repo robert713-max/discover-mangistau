@@ -10,10 +10,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import './App.scss';
 
-import MavzoleyImageOne from './assets/images/mavzoley-khodzhi-akhmeda-yasavi_82.jpg';
-import MavzoleyImageTwo from './assets/images/mavzoley-khodzhi-akhmeda-yasavi_81.jpg';
-import MavzoleyImageThree from './assets/images/mavzoley-khodzhi-akhmeda-yasavi_66.jpg';
-import MavzoleyImageFour from './assets/images/mavzoley-khodzhi-akhmeda-yasavi_50.jpg';
+import ImageOne from './assets/images/mangistau_1.jpg';
+import ImageTwo from './assets/images/mangistau_2.jpg';
+import ImageThree from './assets/images/mangistau_3.jpg';
+import ImageFour from './assets/images/mangistau_4.jpg';
 import Video from './components/Video/Video';
 
 function App() {
@@ -23,7 +23,9 @@ function App() {
 			<main className="main">
 				{/* Басты бет */}
 				<section id="Басты бет" className="slider-section">
-					<h1 className="slider-title">Түркістан қаласының археологиялық ескерткіштері</h1>
+					<h1 className="slider-title">
+						Маңғыстау облысындағы тарихи-мәдени ескерткіштер
+					</h1>
 					<Swiper
 						pagination={{ dynamicBullets: true }}
 						autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -32,43 +34,39 @@ function App() {
 						loop={true}
 					>
 						<SwiperSlide>
-							<img src={MavzoleyImageOne} alt="Mavzoley 1" />
+							<img src={ImageOne} alt="mangistau photo" />
 						</SwiperSlide>
 						<SwiperSlide>
-							<img src={MavzoleyImageTwo} alt="Mavzoley 2" />
+							<img src={ImageTwo} alt="mangistau photo" />
 						</SwiperSlide>
 						<SwiperSlide>
-							<img src={MavzoleyImageThree} alt="Mavzoley 3" />
+							<img src={ImageThree} alt="mangistau photo" />
 						</SwiperSlide>
 						<SwiperSlide>
-							<img src={MavzoleyImageFour} alt="Mavzoley 4" />
+							<img src={ImageFour} alt="mangistau photo" />
 						</SwiperSlide>
 					</Swiper>
 				</section>
-				<section className="section-description"> 
+				<section className="section-description">
 					<div className="container">
-						<h2 className="section-description__title">Түркістанға барудың себептер</h2>
-						<Stepper />
+						<h2 className="section-description__title">Маңғыстау облысында республикалық маңызы бар 20 тарихи-мәдени ескерткіш тіркелген</h2>
 					</div>
 				</section>
 				{/* Ескерткіштер */}
 				<section id="Ескерткіштер" className="section-history">
 					<div className="container">
-						<h2 className="section-history__title">Түркістан қаласындағы маңызды тарихи-мәдени ескерткіштер</h2>
 						<Cards />
 					</div>
 				</section>
 				{/* Тарихы терең Түркістан */}
 				<section id="Тарихы терең Түркістан" className="section-description">
 					<div className="container">
-						<h2 className="section-description__title">Тарихы терең Түркістан</h2>
-						<Video />
+						<h2 className="section-description__title">Тарихи-мәдени ескерткіштердің орналасқан жері</h2>
 					</div>
 				</section>
 				{/* Карта */}
 				<section id="Карта" className="section-last">
 					<div className="container">
-						<h2 className="section-last__title">Тарихи-мәдени ескерткіштерің орналасқан жері</h2>
 						<Map />
 					</div>
 				</section>

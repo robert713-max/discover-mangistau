@@ -21,7 +21,7 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ['Басты бет', 'Ескерткіштер', 'Тарихы терең Түркістан', 'Карта'];
+const navItems = ['Басты бет', 'Ескерткіштер', 'Карта'];
 
 export default function Header(props: Props) {
     const { window } = props;
@@ -34,7 +34,7 @@ export default function Header(props: Props) {
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-                Discover Turkestan
+                Маңғыстауға саяхат
             </Typography>
             <Divider />
             <List>
@@ -66,7 +66,7 @@ export default function Header(props: Props) {
                 component="nav"
                 elevation={0}
                 sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.55)', // тёмное прозрачное затемнение
+                    backgroundColor: 'hsl(0, 0.00%, 0.00%)', // тёмное прозрачное затемнение
                     backdropFilter: 'blur(4px)',           // лёгкий размытие заднего плана
                     boxShadow: 'none',
                     position: 'fixed', // <-- фиксируем AppBar
@@ -91,7 +91,7 @@ export default function Header(props: Props) {
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Discover Turkestan
+                            Маңғыстауға саяхат
                         </Typography>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (

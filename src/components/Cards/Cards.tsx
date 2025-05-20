@@ -1,56 +1,25 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, CardActions } from '@mui/material';
-import { monuments } from '../../data/monuments';
 import './Cards.scss';
+import { monuments } from '../../data/monuments';
 
 export default function Cards() {
     return (
         <div className="cards-wrapper">
             {monuments.map((monument, index) => (
-                <Card
+                <div
+                    className="card"
                     key={index}
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%',
-                    }}
-                >
-                    <CardMedia
-                        component="img"
-                        alt={monument.title}
-                        height="200"
-                        image={monument.image}
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {monument.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Ғасыр: {monument.century}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            sx={{ color: 'text.secondary', marginTop: '10px' }}
-                        >
+                    style={{ backgroundImage: `url(${monument.image})` }}
+                >   
+                    <div className="card-content">
+                        <h2 className="card-title">{monument.title}</h2>
+                        <p className="card-body">
                             {monument.description}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button
-                            size="small"
-                            component="a"
-                            href={monument.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+                        </p>
+                        <a href={monument.link} target="_blank" className="button">
                             Толығырақ
-                        </Button>
-                    </CardActions>
-                </Card>
-
+                        </a>
+                    </div>
+                </div>
             ))}
         </div>
     );
