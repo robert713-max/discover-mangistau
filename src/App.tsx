@@ -1,6 +1,5 @@
 import DrawerAppBar from './components/header/Header';
 import Cards from './components/Cards/Cards';
-import Stepper from './components/Stepper/Stepper';
 import Map from './components/Map/Map';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
