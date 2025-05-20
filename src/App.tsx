@@ -13,7 +13,6 @@ import ImageOne from './assets/images/mangistau_1.jpg';
 import ImageTwo from './assets/images/mangistau_2.jpg';
 import ImageThree from './assets/images/mangistau_3.jpg';
 import ImageFour from './assets/images/mangistau_4.jpg';
-import Video from './components/Video/Video';
 
 function App() {
 	return (
