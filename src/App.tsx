@@ -1,4 +1,5 @@
 import DrawerAppBar from './components/header/Header';
+import Footer from './components/footer/Footer';
 import Cards from './components/Cards/Cards';
 import Map from './components/Map/Map';
 
@@ -68,6 +69,7 @@ function App() {
 						<Map />
 					</div>
 				</section>
+				<Footer />
 			</main >
 		</>
 	);
